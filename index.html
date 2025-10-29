@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDU Dashboard - Data Center Monitoring</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1><i class="fas fa-bolt"></i> PDU Dashboard</h1>
+                <span class="facility-name">Data Center - Rack A2</span>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator">
+                    <span class="status-dot status-online"></span>
+                    <span>PDU-001 Online</span>
+                </div>
+                <div class="last-update">
+                    Last Update: <span id="lastUpdate">--:--:--</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <!-- Overview Cards -->
+            <section class="overview-cards">
+                <div class="metric-card power-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-plug"></i> Total Power</h3>
+                        <button class="info-btn" data-info="power">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric-value" id="totalPower">0</div>
+                        <div class="metric-unit">kW</div>
+                        <div class="metric-status" id="powerStatus">Normal</div>
+                        <div class="metric-detail">
+                            Capacity: <span id="powerCapacity">32</span> kW
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card voltage-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-zap"></i> Input Voltage</h3>
+                        <button class="info-btn" data-info="voltage">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric-value" id="inputVoltage">0</div>
+                        <div class="metric-unit">V</div>
+                        <div class="metric-status" id="voltageStatus">Normal</div>
+                        <div class="metric-detail">
+                            Range: 200-240V
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card current-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-wave-square"></i> Total Current</h3>
+                        <button class="info-btn" data-info="current">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric-value" id="totalCurrent">0</div>
+                        <div class="metric-unit">A</div>
+                        <div class="metric-status" id="currentStatus">Normal</div>
+                        <div class="metric-detail">
+                            Max: <span id="currentCapacity">63</span> A
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card temperature-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-thermometer-half"></i> Temperature</h3>
+                        <button class="info-btn" data-info="temperature">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric-value" id="temperature">0</div>
+                        <div class="metric-unit">°C</div>
+                        <div class="metric-status" id="temperatureStatus">Normal</div>
+                        <div class="metric-detail">
+                            Limit: 40°C
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Circuit Monitoring -->
+            <section class="circuit-section">
+                <h2><i class="fas fa-sitemap"></i> Circuit Status</h2>
+                <div class="circuits-grid" id="circuitsGrid">
+                    <!-- Circuits will be dynamically generated -->
+                </div>
+            </section>
+
+            <!-- Environmental Monitoring -->
+            <section class="environmental-section">
+                <h2><i class="fas fa-cloud"></i> Environmental Status</h2>
+                <div class="environmental-cards">
+                    <div class="env-card humidity-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-tint"></i> Humidity</h3>
+                            <button class="info-btn" data-info="humidity">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="metric-value" id="humidity">0</div>
+                            <div class="metric-unit">%</div>
+                            <div class="metric-status" id="humidityStatus">Normal</div>
+                        </div>
+                    </div>
+
+                    <div class="env-card frequency-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-broadcast-tower"></i> Frequency</h3>
+                            <button class="info-btn" data-info="frequency">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="metric-value" id="frequency">0</div>
+                            <div class="metric-unit">Hz</div>
+                            <div class="metric-status" id="frequencyStatus">Normal</div>
+                        </div>
+                    </div>
+
+                    <div class="env-card power-factor-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Power Factor</h3>
+                            <button class="info-btn" data-info="powerfactor">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="metric-value" id="powerFactor">0</div>
+                            <div class="metric-unit"></div>
+                            <div class="metric-status" id="powerFactorStatus">Normal</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerts Section -->
+            <section class="alerts-section">
+                <h2><i class="fas fa-exclamation-triangle"></i> Active Alerts</h2>
+                <div class="alerts-container" id="alertsContainer">
+                    <!-- Alerts will be dynamically populated -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Information Panel (Fly-out) -->
+        <div class="info-panel" id="infoPanel">
+            <div class="info-panel-content">
+                <div class="info-header">
+                    <h3 id="infoTitle">Monitoring Information</h3>
+                    <button class="close-btn" id="closeInfoPanel">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="info-body" id="infoBody">
+                    <!-- Information content will be dynamically loaded -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Panel Overlay -->
+        <div class="info-overlay" id="infoOverlay"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
