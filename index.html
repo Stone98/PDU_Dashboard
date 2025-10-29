@@ -107,49 +107,50 @@
                 </div>
             </section>
 
-            <!-- Environmental Monitoring -->
+            <!-- Power Factor Monitoring -->
             <section class="environmental-section">
-                <h2><i class="fas fa-cloud"></i> Environmental Status</h2>
+                <h2><i class="fas fa-chart-line"></i> Power Factor</h2>
                 <div class="environmental-cards">
-                    <div class="env-card humidity-card">
+                    <div class="env-card real-power-card">
                         <div class="card-header">
-                            <h3><i class="fas fa-tint"></i> Humidity</h3>
-                            <button class="info-btn" data-info="humidity">
+                            <h3><i class="fas fa-bolt"></i> Real Power (P)</h3>
+                            <button class="info-btn" data-info="realpower">
                                 <i class="fas fa-info-circle"></i>
                             </button>
                         </div>
                         <div class="card-content">
-                            <div class="metric-value" id="humidity">0</div>
-                            <div class="metric-unit">%</div>
-                            <div class="metric-status" id="humidityStatus">Normal</div>
+                            <div class="metric-value" id="realPower">0</div>
+                            <div class="metric-unit">kW</div>
+                            <div class="metric-status" id="realPowerStatus">Normal</div>
                         </div>
                     </div>
 
-                    <div class="env-card frequency-card">
+                    <div class="env-card apparent-power-card">
                         <div class="card-header">
-                            <h3><i class="fas fa-broadcast-tower"></i> Frequency</h3>
-                            <button class="info-btn" data-info="frequency">
+                            <h3><i class="fas fa-battery-three-quarters"></i> Apparent Power (S)</h3>
+                            <button class="info-btn" data-info="apparentpower">
                                 <i class="fas fa-info-circle"></i>
                             </button>
                         </div>
                         <div class="card-content">
-                            <div class="metric-value" id="frequency">0</div>
-                            <div class="metric-unit">Hz</div>
-                            <div class="metric-status" id="frequencyStatus">Normal</div>
+                            <div class="metric-value" id="apparentPower">0</div>
+                            <div class="metric-unit">kVA</div>
+                            <div class="metric-status" id="apparentPowerStatus">Normal</div>
                         </div>
                     </div>
 
                     <div class="env-card power-factor-card">
                         <div class="card-header">
-                            <h3><i class="fas fa-chart-line"></i> Power Factor</h3>
+                            <h3><i class="fas fa-chart-line"></i> Power Factor (PF)</h3>
                             <button class="info-btn" data-info="powerfactor">
                                 <i class="fas fa-info-circle"></i>
                             </button>
                         </div>
                         <div class="card-content">
                             <div class="metric-value" id="powerFactor">0</div>
-                            <div class="metric-unit"></div>
+                            <div class="metric-unit">&nbsp;</div>
                             <div class="metric-status" id="powerFactorStatus">Normal</div>
+                            </div>
                         </div>
                     </div>
                 </div>

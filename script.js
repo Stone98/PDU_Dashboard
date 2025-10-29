@@ -9,6 +9,9 @@ class PDUDashboard {
             humidity: 0,
             frequency: 0,
             powerFactor: 0,
+            realPower: 0,
+            apparentPower: 0,
+            reactivePower: 0,
             circuits: [],
             alerts: []
         };
@@ -20,7 +23,9 @@ class PDUDashboard {
             temperature: { warning: 35, critical: 40 },
             humidity: { low: 30, high: 70 },
             frequency: { low: 49.5, high: 50.5 },
-            powerFactor: { warning: 0.85 }
+            powerFactor: { warning: 0.85 },
+            realPower: { warning: 25.6, critical: 30.4 },
+            apparentPower: { warning: 27.0, critical: 32.0 }
         };
 
         this.infoPanelData = {
@@ -185,18 +190,77 @@ class PDUDashboard {
                     </ul>
                 `
             },
+            realpower: {
+                title: "Real Power (Active Power)",
+                content: `
+                    <h4>What is Real Power?</h4>
+                    <p>Real power (P) is the actual power consumed by electrical equipment to perform useful work. It's measured in kilowatts (kW).</p>
+                    
+                    <h4>Key Characteristics:</h4>
+                    <ul>
+                        <li><strong>Useful Power:</strong> Converts to heat, light, mechanical work, etc.</li>
+                        <li><strong>Billing Power:</strong> What you pay for on your electricity bill</li>
+                        <li><strong>Resistive Load:</strong> Power consumed by resistive components</li>
+                        <li><strong>In-Phase Component:</strong> Voltage and current in phase</li>
+                    </ul>
+                    
+                    <h4>Formula:</h4>
+                    <p><strong>P = V × I × cos(φ)</strong></p>
+                    <p>Where φ (phi) is the phase angle between voltage and current</p>
+                    
+                    <h4>Monitoring Importance:</h4>
+                    <ul>
+                        <li>Track actual energy consumption</li>
+                        <li>Calculate power factor accuracy</li>
+                        <li>Identify inefficient equipment</li>
+                        <li>Optimize energy costs</li>
+                    </ul>
+                `
+            },
+            apparentpower: {
+                title: "Apparent Power",
+                content: `
+                    <h4>What is Apparent Power?</h4>
+                    <p>Apparent power (S) is the total power supplied to the circuit, combining both real and reactive power. It's measured in kilovolt-amperes (kVA).</p>
+                    
+                    <h4>Key Characteristics:</h4>
+                    <ul>
+                        <li><strong>Total Power:</strong> Complete power delivered by the source</li>
+                        <li><strong>Vector Sum:</strong> Combination of real and reactive power</li>
+                        <li><strong>Equipment Rating:</strong> Transformers and generators rated in kVA</li>
+                        <li><strong>Infrastructure Sizing:</strong> Determines wire and equipment capacity</li>
+                    </ul>
+                    
+                    <h4>Formula:</h4>
+                    <p><strong>S = V × I</strong> (RMS values)</p>
+                    <p><strong>S = √(P² + Q²)</strong> (where Q is reactive power)</p>
+                    
+                    <h4>Why Monitor Apparent Power?</h4>
+                    <ul>
+                        <li>Size electrical infrastructure properly</li>
+                        <li>Understand total electrical demand</li>
+                        <li>Calculate power factor (P/S)</li>
+                        <li>Prevent equipment overloading</li>
+                    </ul>
+                `
+            },
             powerfactor: {
                 title: "Power Factor Monitoring",
                 content: `
-                    <h4>Why Monitor Power Factor?</h4>
-                    <p>Power factor monitoring helps with:</p>
-                    <ul>
-                        <li><strong>Efficiency:</strong> Poor power factor wastes energy</li>
-                        <li><strong>Cost Control:</strong> Utilities may charge penalties for low power factor</li>
-                        <li><strong>Capacity Utilization:</strong> Better power factor increases usable capacity</li>
-                        <li><strong>Equipment Sizing:</strong> Affects electrical system design</li>
-                    </ul>
+                    <h4>What is Power Factor?</h4>
+                    <p>Power factor is the ratio of real power (kW) to apparent power (kVA). It indicates how efficiently electrical power is being used.</p>
                     
+                    <h4>Power Factor Formula:</h4>
+                    <p><strong>Power Factor = Real Power (kW) ÷ Apparent Power (kVA)</strong></p>
+                    <p><strong>PF = P / S = cos(φ)</strong></p>
+                    
+                    <h4>Power Triangle Relationship:</h4>
+                    <ul>
+                        <li><strong>Real Power (P):</strong> Horizontal component - actual work done</li>
+                        <li><strong>Reactive Power (Q):</strong> Vertical component - energy stored/released</li>
+                        <li><strong>Apparent Power (S):</strong> Hypotenuse - total power supplied</li>
+                    </ul>
+                    <img src="images/power_factor.jpg" alt="Power Factor Graphic" class="info-image" width="100%" />
                     <h4>Power Factor Scale:</h4>
                     <table class="threshold-table">
                         <tr><th>Power Factor</th><th>Status</th><th>Efficiency</th></tr>
@@ -204,6 +268,14 @@ class PDUDashboard {
                         <tr><td>0.85 - 0.95</td><td>Good</td><td>Acceptable</td></tr>
                         <tr><td>< 0.85</td><td>Poor</td><td>Inefficient</td></tr>
                     </table>
+                    
+                    <h4>Impact of Poor Power Factor:</h4>
+                    <ul>
+                        <li>Higher apparent power for same real power</li>
+                        <li>Increased current draw and I²R losses</li>
+                        <li>Reduced transformer and generator capacity</li>
+                        <li>Potential utility penalty charges</li>
+                    </ul>
                     
                     <h4>Improving Power Factor:</h4>
                     <ul>
@@ -288,6 +360,9 @@ class PDUDashboard {
         this.data.humidity = 45;
         this.data.frequency = 50.0;
         this.data.powerFactor = 0.92;
+        this.data.realPower = 18.5; // Same as total power for display consistency
+        this.data.apparentPower = 20.1; // realPower / powerFactor
+        this.data.reactivePower = 7.8; // sqrt(S² - P²)
 
         // Start simulation
         setInterval(() => {
@@ -323,6 +398,11 @@ class PDUDashboard {
         this.data.powerFactor += (Math.random() - 0.5) * 0.02;
         this.data.powerFactor = Math.max(0.8, Math.min(1.0, this.data.powerFactor));
 
+        // Calculate power measurements based on relationships
+        this.data.realPower = this.data.totalPower; // Real power equals total measured power
+        this.data.apparentPower = this.data.realPower / this.data.powerFactor;
+        this.data.reactivePower = Math.sqrt(Math.pow(this.data.apparentPower, 2) - Math.pow(this.data.realPower, 2));
+
         // Update circuit data
         this.data.circuits.forEach(circuit => {
             circuit.current += (Math.random() - 0.5) * 0.5;
@@ -339,6 +419,13 @@ class PDUDashboard {
         document.getElementById('humidity').textContent = this.data.humidity.toFixed(0);
         document.getElementById('frequency').textContent = this.data.frequency.toFixed(1);
         document.getElementById('powerFactor').textContent = this.data.powerFactor.toFixed(2);
+        document.getElementById('realPower').textContent = this.data.realPower.toFixed(1);
+        document.getElementById('apparentPower').textContent = this.data.apparentPower.toFixed(1);
+        document.getElementById('reactivePower').textContent = this.data.reactivePower.toFixed(1);
+        
+        // Update power factor calculation display
+        document.getElementById('pfRealPower').textContent = this.data.realPower.toFixed(1);
+        document.getElementById('pfApparentPower').textContent = this.data.apparentPower.toFixed(1);
 
         // Update circuit displays
         this.data.circuits.forEach(circuit => {
@@ -430,6 +517,16 @@ class PDUDashboard {
         const pfStatus = this.checkPowerFactorThreshold(this.data.powerFactor);
         document.getElementById('powerFactorStatus').textContent = this.capitalizeFirst(pfStatus);
         document.getElementById('powerFactorStatus').className = `metric-status status-${pfStatus}`;
+
+        // Check real power
+        const realPowerStatus = this.checkThreshold(this.data.realPower, this.thresholds.realPower.warning, this.thresholds.realPower.critical);
+        document.getElementById('realPowerStatus').textContent = this.capitalizeFirst(realPowerStatus);
+        document.getElementById('realPowerStatus').className = `metric-status status-${realPowerStatus}`;
+
+        // Check apparent power
+        const apparentPowerStatus = this.checkThreshold(this.data.apparentPower, this.thresholds.apparentPower.warning, this.thresholds.apparentPower.critical);
+        document.getElementById('apparentPowerStatus').textContent = this.capitalizeFirst(apparentPowerStatus);
+        document.getElementById('apparentPowerStatus').className = `metric-status status-${apparentPowerStatus}`;
 
         this.updateAlerts();
     }

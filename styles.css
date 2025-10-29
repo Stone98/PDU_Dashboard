@@ -318,6 +318,34 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Power Factor Calculation Display */
+.power-factor-calculation {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border-left: 3px solid #00d4ff;
+}
+
+.calculation-formula {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #00d4ff;
+    margin-bottom: 0.3rem;
+}
+
+.calculation-values {
+    font-size: 0.85rem;
+    color: #ffffff;
+    margin-bottom: 0.3rem;
+    font-family: monospace;
+}
+
+.calculation-reactive {
+    font-size: 0.75rem;
+    color: #b0c4de;
+}
+
 /* Alerts Section */
 .alerts-section h2 {
     margin-bottom: 1rem;
