@@ -260,7 +260,7 @@ class PDUDashboard {
                         <li><strong>Reactive Power (Q):</strong> Vertical component - energy stored/released</li>
                         <li><strong>Apparent Power (S):</strong> Hypotenuse - total power supplied</li>
                     </ul>
-                    <img src="images/power_factor.jpg" alt="Power Factor Graphic" class="info-image" width="100%" />
+                    <img id="powerFactorImage" src="images/power_factor.jpg" alt="Power Factor Graphic" class="info-image" width="100%" />
                     <h4>Power Factor Scale:</h4>
                     <table class="threshold-table">
                         <tr><th>Power Factor</th><th>Status</th><th>Efficiency</th></tr>
@@ -317,6 +317,17 @@ class PDUDashboard {
 
         document.getElementById('infoOverlay').addEventListener('click', () => {
             this.hideInfoPanel();
+        });
+        
+        // Image modal event listeners
+        document.getElementById('imageModalClose').addEventListener('click', () => {
+            this.hideImageModal();
+        });
+        
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target.id === 'imageModal') {
+                this.hideImageModal();
+            }
         });
     }
 
@@ -613,6 +624,14 @@ class PDUDashboard {
             
             panel.classList.add('active');
             overlay.classList.add('active');
+            
+            // Set up image click handler for power factor image
+            const powerFactorImage = document.getElementById('powerFactorImage');
+            if (powerFactorImage) {
+                powerFactorImage.addEventListener('click', () => {
+                    this.showImageModal(powerFactorImage.src, powerFactorImage.alt);
+                });
+            }
         }
     }
 
@@ -623,11 +642,39 @@ class PDUDashboard {
         panel.classList.remove('active');
         overlay.classList.remove('active');
     }
+    
+    showImageModal(imageSrc, imageAlt) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        
+        modalImage.src = imageSrc;
+        modalImage.alt = imageAlt;
+        modal.classList.add('active');
+    }
+    
+    hideImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('active');
+    }
 
     updateLastUpdateTime() {
         const now = new Date();
         const timeString = now.toLocaleTimeString();
         document.getElementById('lastUpdate').textContent = timeString;
+    }
+    
+    showImageModal(imageSrc, imageAlt) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        
+        modalImage.src = imageSrc;
+        modalImage.alt = imageAlt;
+        modal.classList.add('active');
+    }
+    
+    hideImageModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('active');
     }
 }
 
