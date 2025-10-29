@@ -2,6 +2,10 @@
 
 A comprehensive Power Distribution Unit (PDU) monitoring dashboard designed for data center operations. This dashboard provides real-time monitoring of critical PDU metrics with educational information panels explaining the importance of each measurement.
 
+## 🚀 [Live Demo](https://stone98.github.io/PDU_Dashboard/)
+
+Try the interactive dashboard with real-time simulated data from a live data center PDU.
+
 ## Features
 
 ### 🔋 **Power Monitoring**
